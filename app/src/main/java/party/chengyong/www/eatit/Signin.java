@@ -1,6 +1,7 @@
 package party.chengyong.www.eatit;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
+import party.chengyong.www.eatit.Common.Common;
 import party.chengyong.www.eatit.Model.User;
 
 public class Signin extends AppCompatActivity {
@@ -53,7 +55,13 @@ public class Signin extends AppCompatActivity {
                             User user = dataSnapshot.child(edtPhone.getText().toString()).getValue(User.class);
                             if (user.getPassword().equals(edtPassword.getText().toString())){
                                 Toast.makeText(Signin.this,"登入成功！",Toast.LENGTH_SHORT).show();
+                                Intent homeIntent = new Intent(Signin.this, Home.class);
+                                Common.currentUser = user;
+                                startActivity(homeIntent);
+                                finish();
+
                             }else{
+
                                 Toast.makeText(Signin.this,"登入失敗（電話或是密碼錯誤）！",Toast.LENGTH_SHORT).show();
                             }
                         }else{
