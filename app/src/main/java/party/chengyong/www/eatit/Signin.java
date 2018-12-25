@@ -53,6 +53,7 @@ public class Signin extends AppCompatActivity {
                             //get user info
                             mDialog.dismiss();
                             User user = dataSnapshot.child(edtPhone.getText().toString()).getValue(User.class);
+                            user.setPhone(edtPhone.getText().toString()); //set phone
                             if (user.getPassword().equals(edtPassword.getText().toString())){
                                 Toast.makeText(Signin.this,"登入成功！",Toast.LENGTH_SHORT).show();
                                 Intent homeIntent = new Intent(Signin.this, Home.class);

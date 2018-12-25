@@ -5,8 +5,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.google.firebase.database.DataSnapshot;
@@ -16,7 +18,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import party.chengyong.www.eatit.Database.Database;
 import party.chengyong.www.eatit.Model.Food;
+import party.chengyong.www.eatit.Model.Order;
 
 public class FoodDetail extends AppCompatActivity {
 
@@ -31,6 +35,8 @@ public class FoodDetail extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference foods;
 
+    Food currentFood;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +49,25 @@ public class FoodDetail extends AppCompatActivity {
         //Init view
         numberButton = (ElegantNumberButton) findViewById(R.id.number_button);
         btnCart = (FloatingActionButton) findViewById(R.id.btnCart);
+
+        btnCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Database(getBaseContext()).addToCart(new Order(
+                        foodId,
+                        currentFood.getName(),
+                        numberButton.getNumber(),
+                        currentFood.getPrice(),
+                        currentFood.getDiscount()
+
+
+
+                ));
+
+                Toast.makeText(FoodDetail.this,"成功加入購物車",Toast.LENGTH_SHORT).show();
+            }
+        });
+
         food_description = (TextView) findViewById(R.id.food_description);
         food_image = (ImageView) findViewById(R.id.img_food);
         food_price = (TextView) findViewById(R.id.food_price);
@@ -66,15 +91,15 @@ public class FoodDetail extends AppCompatActivity {
         foods.child(foodId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Food food = dataSnapshot.getValue(Food.class);
+                currentFood = dataSnapshot.getValue(Food.class);
 
                 //set image
-                Picasso.with(getBaseContext()).load(food.getImage()).into(food_image);
-                collapsingToolbarLayout.setTitle(food.getName());
-                Log.d("Tag",food.getName());
-                food_price.setText(food.getPrice());
-                food_name.setText(food.getName());
-                food_description.setText(food.getDescription());
+                Picasso.with(getBaseContext()).load(currentFood.getImage()).into(food_image);
+                collapsingToolbarLayout.setTitle(currentFood.getName());
+                Log.d("Tag",currentFood.getName());
+                food_price.setText(currentFood.getPrice());
+                food_name.setText(currentFood.getName());
+                food_description.setText(currentFood.getDescription());
             }
 
             @Override
