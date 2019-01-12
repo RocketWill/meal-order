@@ -1,6 +1,8 @@
 # Meal Order Android Project
 **2018 北京大學軟件與微電子學院 移動平台開發課程 - 點餐 Android 項目**
 <br>
+DEMO 視頻鏈接：http://bit.ly/Obeija-food-deliver-app
+<br>
 成果展示
 
 1. 登錄界面
